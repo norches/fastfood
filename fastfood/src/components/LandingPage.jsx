@@ -4,41 +4,60 @@ import "../App.css";
 
 function LandingPage() {
     return (
-        <div className="min-h-screen w-full bg-gradient-to-br from-[#0b2f24] via-[#0f3d2e] to-[#144b38] text-white">
+        <div className="page">
 
-            {/* NAVBAR */}
-            <nav className="w-full">
-                <div className="max-w-[1300px] mx-auto flex items-center justify-between px-6 py-6">
+            <nav className="navbar">
+                <div className="nav-container">
 
-                    <h1 className="text-2xl font-bold tracking-widest">
-                        BURGUR
-                    </h1>
+                    <h1 className="logo">BURGUR</h1>
 
-                    <ul className="hidden md:flex gap-10 text-sm tracking-wide">
-                        <li className="cursor-pointer hover:text-yellow-300">Home</li>
-                        <li className="cursor-pointer hover:text-yellow-300">Menu</li>
-                        <li className="cursor-pointer hover:text-yellow-300">About</li>
-                        <li className="cursor-pointer hover:text-yellow-300">Shop</li>
+                    <ul className="nav-links">
+                        <li>Home</li>
+                        <li>Menu</li>
+                        <li>About</li>
+                        <li>Shop</li>
                     </ul>
 
-                    <div className="flex gap-5 text-xl">
-                        <FaShoppingCart className="cursor-pointer hover:text-yellow-300" />
-                        <FaUserShield className="cursor-pointer hover:text-yellow-300" />
+                    <div className="nav-icons">
+                        <FaShoppingCart />
+                        <FaUserShield />
                     </div>
 
                 </div>
             </nav>
 
-            <div className={"max-w-[1300px] mx-auto px-6 py-6"}>
-              <div>
-                  <h1>THE ULTIMATE</h1>
-                  <h1>BURGUR CLUB</h1>
-                  <h1>Savor the Flavor, Join the Club!</h1>
-              </div>
-                <div>
-                    <img src="" alt=""/>
+            <section className="hero">
+                <div className="hero-text">
+                    <div className="headline-group">
+
+                        <p className="ultimate-text">THE ULTIMATE</p>
+
+                        <h1 className="hero-title">Burger Club</h1>
+
+                        <p className="subtitle">
+                            Savor the Flavor, Join the Club!
+                        </p>
+
+                    </div>
+
+                    <div className="thumbs">
+                        <div className="thumb">
+                            <img src={burger} alt="burger" />
+                        </div>
+                        <div className="thumb">
+                            <img src={burger} alt="burger" />
+                        </div>
+                        <div className="thumb">
+                            <img src={burger} alt="burger" />
+                        </div>
+                    </div>
                 </div>
-            </div>
+
+                <div className="hero-image">
+                    <img src={burger} alt="Burger" />
+                </div>
+
+            </section>
 
         </div>
     );
