@@ -1,5 +1,6 @@
 import { FaShoppingCart, FaUserShield } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { getProducts, getProductImage } from "../api/productApi.js";
 import burger from "../img/28c866cd86d7bc0f9c0b4329226ce57a4cc97386.png";
 import coffee from "../img/coffee.png";
 import "../App.css";
@@ -11,6 +12,15 @@ function LandingPage() {
             section.scrollIntoView({ behavior: "smooth" });
         }
     };
+
+    const [products, setProducts] = useState([]);
+
+    useEffect(() => {
+        getProducts()
+            .then(setProducts)
+            .catch(err => console.error("Failed to load menu", err));
+    }, []);
+
 
     return (
         <div className="page">
@@ -75,35 +85,49 @@ function LandingPage() {
                         Explore all flavours of coffee with us. There is always a new cup worth experiencing
                     </p>
                     <div className="menu-grid">
-                        <div className="menu-card">
-                            <img src={coffee} alt="Cappuccino" />
-                            <h3>Cappuccino</h3>
-                            <p className="menu-desc">Coffee 50% | Milk 50%</p>
-                            <span className="menu-price">$8.50</span>
-                            <button>Order Now</button>
-                        </div>
-                        <div className="menu-card">
-                            <img src={coffee} alt="Chai Latte" />
-                            <h3>Chai Latte</h3>
-                            <p className="menu-desc">Coffee 50% | Milk 50%</p>
-                            <span className="menu-price">$8.50</span>
-                            <button>Order Now</button>
-                        </div>
-                        <div className="menu-card">
-                            <img src={coffee} alt="Macchiato" />
-                            <h3>Macchiato</h3>
-                            <p className="menu-desc">Coffee 50% | Milk 50%</p>
-                            <span className="menu-price">$8.50</span>
-                            <button>Order Now</button>
-                        </div>
-                        <div className="menu-card">
-                            <img src={coffee} alt="Espresso" />
-                            <h3>Espresso</h3>
-                            <p className="menu-desc">Coffee 50% | Milk 50%</p>
-                            <span className="menu-price">$8.50</span>
-                            <button>Order Now</button>
-                        </div>
+                        {products.map(product => (
+                            <div className="menu-card" key={product.id}>
+                                <img
+                                    src={getProductImage(product.image)}
+                                    alt={product.name}
+                                />
+                                <h3>{product.name}</h3>
+                                <p className="menu-desc">{product.description}</p>
+                                <span className="menu-price">${product.price}</span>
+                                <button>Order Now</button>
+                            </div>
+                        ))}
                     </div>
+                    {/*<div className="menu-grid">*/}
+                    {/*    <div className="menu-card">*/}
+                    {/*        <img src={coffee} alt="Cappuccino" />*/}
+                    {/*        <h3>Cappuccino</h3>*/}
+                    {/*        <p className="menu-desc">Coffee 50% | Milk 50%</p>*/}
+                    {/*        <span className="menu-price">$8.50</span>*/}
+                    {/*        <button>Order Now</button>*/}
+                    {/*    </div>*/}
+                    {/*    <div className="menu-card">*/}
+                    {/*        <img src={coffee} alt="Chai Latte" />*/}
+                    {/*        <h3>Chai Latte</h3>*/}
+                    {/*        <p className="menu-desc">Coffee 50% | Milk 50%</p>*/}
+                    {/*        <span className="menu-price">$8.50</span>*/}
+                    {/*        <button>Order Now</button>*/}
+                    {/*    </div>*/}
+                    {/*    <div className="menu-card">*/}
+                    {/*        <img src={coffee} alt="Macchiato" />*/}
+                    {/*        <h3>Macchiato</h3>*/}
+                    {/*        <p className="menu-desc">Coffee 50% | Milk 50%</p>*/}
+                    {/*        <span className="menu-price">$8.50</span>*/}
+                    {/*        <button>Order Now</button>*/}
+                    {/*    </div>*/}
+                    {/*    <div className="menu-card">*/}
+                    {/*        <img src={coffee} alt="Espresso" />*/}
+                    {/*        <h3>Espresso</h3>*/}
+                    {/*        <p className="menu-desc">Coffee 50% | Milk 50%</p>*/}
+                    {/*        <span className="menu-price">$8.50</span>*/}
+                    {/*        <button>Order Now</button>*/}
+                    {/*    </div>*/}
+                    {/*</div>*/}
                 </div>
             </section>
             <section id="why" className="why">
