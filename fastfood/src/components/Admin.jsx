@@ -86,7 +86,7 @@ function Admin() {
         <div className="admin-container">
             <div className="admin-header">
                 <h1>
-                    <FaShoppingCart /> Admin Dashboard - Orders
+                    <FaShoppingCart />Orders
                 </h1>
                 <button onClick={loadOrders} className="refresh-btn">
                     Refresh
@@ -110,7 +110,7 @@ function Admin() {
                                         <strong>Order ID:</strong> {order.orderId?.substring(0, 8)}...
                                     </div>
                                     <div className="order-total">
-                                        <FaDollarSign /> ${order.total?.toFixed(2)}
+                                        {order.total} so'm
                                     </div>
                                 </div>
 
@@ -131,8 +131,8 @@ function Admin() {
                                                 <li key={index} className="order-item">
                                                     <span className="item-name">{item.name}</span>
                                                     <span className="item-details">
-                                                        Qty: {item.amount} × ${item.price?.toFixed(2)} = 
-                                                        ${((item.amount || 0) * (item.price || 0)).toFixed(2)}
+                                                        Quantity: {item.amount} × {item.price} =
+                                                        {((item.amount || 0) * (item.price || 0))}
                                                     </span>
                                                 </li>
                                             ))}
@@ -143,7 +143,7 @@ function Admin() {
                                 {order.location && (
                                     <div className="order-location">
                                         <FaMapMarkerAlt className="location-icon" />
-                                        <span><strong>Delivery Location:</strong> {order.location}</span>
+                                        <span><strong>Location:</strong> {order.location}</span>
                                     </div>
                                 )}
                             </div>
@@ -164,9 +164,9 @@ function Admin() {
                     <FaDollarSign className="stat-icon" />
                     <div>
                         <h3>
-                            ${orders.reduce((sum, order) => sum + (order.total || 0), 0).toFixed(2)}
+                            {orders.reduce((sum, order) => sum + (order.total || 0), 0)} so'm
                         </h3>
-                        <p>Total Revenue</p>
+                        <p>Total</p>
                     </div>
                 </div>
             </div>

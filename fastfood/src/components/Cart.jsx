@@ -42,7 +42,6 @@ function Cart({ cartItems, onUpdateQuantity, onRemoveItem, onClose, products }) 
         setIsSubmitting(true);
         setError(null);
 
-        // Format location as "lat, lng" or address string
         const locationString = `${selectedLocation.lat}, ${selectedLocation.lng}`;
 
         try {
@@ -51,9 +50,8 @@ function Cart({ cartItems, onUpdateQuantity, onRemoveItem, onClose, products }) 
             setOrderSuccess(true);
             setTimeout(() => {
                 setOrderSuccess(false);
-                setSelectedLocation(null); // Clear location
+                setSelectedLocation(null);
                 onClose();
-                // Clear cart after successful order
                 cartItems.forEach(item => onRemoveItem(item.productId));
             }, 2000);
         } catch (err) {
@@ -109,7 +107,7 @@ function Cart({ cartItems, onUpdateQuantity, onRemoveItem, onClose, products }) 
                                             />
                                             <div className="cart-item-details">
                                                 <h3>{product.name}</h3>
-                                                <p className="cart-item-price">${product.price}</p>
+                                                <p className="cart-item-price">{product.price} so'm</p>
                                                 <div className="cart-item-controls">
                                                     <button
                                                         onClick={() => onUpdateQuantity(item.productId, item.quantity - 1)}
@@ -145,7 +143,7 @@ function Cart({ cartItems, onUpdateQuantity, onRemoveItem, onClose, products }) 
                                 <LocationMap 
                                     onLocationSelect={(location) => {
                                         setSelectedLocation(location);
-                                        setError(null); // Clear error when location is selected
+                                        setError(null);
                                     }}
                                 />
                                 {selectedLocation && (
@@ -161,7 +159,7 @@ function Cart({ cartItems, onUpdateQuantity, onRemoveItem, onClose, products }) 
                             <div className="cart-footer">
                                 <div className="cart-total">
                                     <span>Total:</span>
-                                    <span className="total-price">${calculateTotal().toFixed(2)}</span>
+                                    <span className="total-price">{calculateTotal()} so'm</span>
                                 </div>
                                 
                                 {error && (

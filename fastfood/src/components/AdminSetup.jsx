@@ -57,7 +57,7 @@ function AdminSetup() {
                         <div className="error-message">{error}</div>
                     )}
                     
-                    <button type="submit" disabled={loading || !username}>
+                    <button className="button" type="submit" disabled={loading || !username}>
                         {loading ? 'Assigning...' : 'Assign Admin Role'}
                     </button>
                 </form>

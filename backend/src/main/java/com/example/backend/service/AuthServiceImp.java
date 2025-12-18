@@ -30,10 +30,16 @@ public class AuthServiceImp implements AuthService {
     @Override
     public HttpEntity<?> saveUser(UserDto dto) {
         List<Role> roleUser = roleRepo.findByName("ROLE_USER");
-        System.out.println(roleUser);
         User save = userRepo.save(new User(dto.username(), passwordEncoder.encode(dto.password()),
                 dto.firstName(), dto.lastName(), roleUser, true));
-        return ResponseEntity.ok(save);
+
+        String accessToken = jwtService.generateJwtToken(save);
+        String refreshToken = jwtService.generateRefreshToken(save);
+
+        return ResponseEntity.ok(Map.of(
+                "access_token", accessToken,
+                "refresh_token", refreshToken
+        ));
     }
 
     @Override

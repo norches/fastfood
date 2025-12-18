@@ -68,7 +68,7 @@
     margin-bottom: 15px;
 }
 
-button {
+.button {
     width: 100%;
     padding: 12px;
     background-color: #e74c3c;
@@ -81,11 +81,11 @@ button {
     transition: background-color 0.2s;
 }
 
-button:hover:not(:disabled) {
+.button:hover:not(:disabled) {
     background-color: #c0392b;
 }
 
-button:disabled {
+.button:disabled {
     background-color: #ccc;
     cursor: not-allowed;
 }

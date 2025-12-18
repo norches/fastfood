@@ -1,12 +1,21 @@
-import { FaShoppingCart, FaUserShield } from "react-icons/fa";
+import { FaShoppingCart, FaSignOutAlt } from "react-icons/fa";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { getProducts, getProductImage } from "../api/productApi.js";
 import burger from "../img/28c866cd86d7bc0f9c0b4329226ce57a4cc97386.png";
 import coffee from "../img/coffee.png";
 import Cart from "./Cart.jsx";
 import "../App.css";
+import axios from "axios";
 
 function LandingPage() {
+    const navigate = useNavigate();
+    const [products, setProducts] = useState([]);
+    const [cartItems, setCartItems] = useState([]);
+    const [isCartOpen, setIsCartOpen] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [userName, setUserName] = useState("");
+
     const scrollToSection = (id) => {
         const section = document.getElementById(id);
         if (section) {
@@ -14,15 +23,49 @@ function LandingPage() {
         }
     };
 
-    const [products, setProducts] = useState([]);
-    const [cartItems, setCartItems] = useState([]);
-    const [isCartOpen, setIsCartOpen] = useState(false);
-
     useEffect(() => {
+        const token = localStorage.getItem('accessToken');
+        if (token) {
+            setIsLoggedIn(true);
+            fetchUserInfo(token);
+        }
+
         getProducts()
             .then(setProducts)
             .catch(err => console.error("Failed to load menu", err));
     }, []);
+
+    const fetchUserInfo = async (token) => {
+        try {
+            const decodedToken = parseJwt(token);
+            setUserName(decodedToken.firstName || "User");
+        } catch (error) {
+            console.error("Failed to fetch user info", error);
+            handleLogout();
+        }
+    };
+
+    const parseJwt = (token) => {
+        try {
+            return JSON.parse(atob(token.split('.')[1]));
+        } catch (e) {
+            return {};
+        }
+    };
+
+    const handleLogout = () => {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+
+        setIsLoggedIn(false);
+        setUserName("");
+
+        setCartItems([]);
+    };
+
+    const handleLoginClick = () => {
+        navigate("/login");
+    };
 
     const addToCart = (productId) => {
         setCartItems(prevItems => {
@@ -37,7 +80,6 @@ function LandingPage() {
                 return [...prevItems, { productId, quantity: 1 }];
             }
         });
-        setIsCartOpen(true);
     };
 
     const updateQuantity = (productId, newQuantity) => {
@@ -62,33 +104,43 @@ function LandingPage() {
         return cartItems.reduce((total, item) => total + item.quantity, 0);
     };
 
-
     return (
         <div className="page">
-
             <nav id="navbar" className="navbar">
                 <div className="nav-container">
                     <h1 className="logo">BURGUR</h1>
                     <ul className="nav-links">
-                        <li onClick={() => scrollToSection("menu")}>Menu</li>
-                        <li onClick={() => scrollToSection("why")}>About</li>
-                        <li onClick={() => scrollToSection("footer")}>Contact us</li>
+                        <li className="li" onClick={() => scrollToSection("menu")}>Menu</li>
+                        <li className="li" onClick={() => scrollToSection("why")}>About</li>
+                        <li className="li" onClick={() => scrollToSection("footer")}>Contact us</li>
                     </ul>
                     <div className="nav-icons">
-                        <div 
-                            className="cart-icon-wrapper" 
-                            onClick={() => setIsCartOpen(true)}
-                            style={{ position: 'relative', cursor: 'pointer' }}
-                        >
-                            <FaShoppingCart />
-                            {getCartItemCount() > 0 && (
-                                <span className="cart-badge">{getCartItemCount()}</span>
-                            )}
-                        </div>
-                        <FaUserShield />
+                        {isLoggedIn ? (
+                            <div className="user-info">
+                                <span className="username">Account: {userName}</span>
+                                <button onClick={handleLogout} className="logout-button">
+                                    <FaSignOutAlt />
+                                </button>
+                            </div>
+                        ) : (
+                            <button onClick={handleLoginClick} className="login-button">
+                                Login
+                            </button>
+                        )}
                     </div>
                 </div>
             </nav>
+
+            <div
+                className="floating-cart-button"
+                onClick={() => setIsCartOpen(true)}
+            >
+                <FaShoppingCart />
+                {getCartItemCount() > 0 && (
+                    <span className="floating-cart-badge">{getCartItemCount()}</span>
+                )}
+            </div>
+
             <section id="hero" className="hero">
                 <div className="hero-text">
                     <div className="headline-group">
@@ -114,12 +166,13 @@ function LandingPage() {
                     <img src={burger} alt="Burger" />
                 </div>
             </section>
+
             <section className="info">
                 <div className="info-section">
                     <div className="text-section">
                         <h1 className="main-text">Discover the best burger</h1>
                         <p className="info-text"> At Burgur, we don't just serve burgers; we serve quality. Each burger is crafted with the finest ingredients to deliver the perfect balance of flavor, texture, and satisfaction. Whether you're craving a classic or something new, every bite is an experience that takes you beyond ordinary fast food.
-                            Our secret? It is the passion we put into every burger, the love for the craft, and the commitment to offering you the best taste you’ll ever find. At Burgur, every burger is a masterpiece designed to delight your taste buds and fuel your hunger.
+                            Our secret? It is the passion we put into every burger, the love for the craft, and the commitment to offering you the best taste you'll ever find. At Burgur, every burger is a masterpiece designed to delight your taste buds and fuel your hunger.
                             Taste the difference. Feel the joy. Burgur – where every burger is better than the last.
                         </p>
                     </div>
@@ -128,6 +181,7 @@ function LandingPage() {
                     </div>
                 </div>
             </section>
+
             <section id="menu" className="menu">
                 <div className="menu-container">
                     <h2 className="menu-title">Enjoy a new blend of coffee style</h2>
@@ -143,48 +197,19 @@ function LandingPage() {
                                 />
                                 <h3>{product.name}</h3>
                                 <p className="menu-desc">{product.description}</p>
-                                <span className="menu-price">${product.price}</span>
+                                <span className="menu-price">{product.price} so'm</span>
                                 <button onClick={() => addToCart(product.id)}>Order Now</button>
                             </div>
                         ))}
                     </div>
-                    {/*<div className="menu-grid">*/}
-                    {/*    <div className="menu-card">*/}
-                    {/*        <img src={coffee} alt="Cappuccino" />*/}
-                    {/*        <h3>Cappuccino</h3>*/}
-                    {/*        <p className="menu-desc">Coffee 50% | Milk 50%</p>*/}
-                    {/*        <span className="menu-price">$8.50</span>*/}
-                    {/*        <button>Order Now</button>*/}
-                    {/*    </div>*/}
-                    {/*    <div className="menu-card">*/}
-                    {/*        <img src={coffee} alt="Chai Latte" />*/}
-                    {/*        <h3>Chai Latte</h3>*/}
-                    {/*        <p className="menu-desc">Coffee 50% | Milk 50%</p>*/}
-                    {/*        <span className="menu-price">$8.50</span>*/}
-                    {/*        <button>Order Now</button>*/}
-                    {/*    </div>*/}
-                    {/*    <div className="menu-card">*/}
-                    {/*        <img src={coffee} alt="Macchiato" />*/}
-                    {/*        <h3>Macchiato</h3>*/}
-                    {/*        <p className="menu-desc">Coffee 50% | Milk 50%</p>*/}
-                    {/*        <span className="menu-price">$8.50</span>*/}
-                    {/*        <button>Order Now</button>*/}
-                    {/*    </div>*/}
-                    {/*    <div className="menu-card">*/}
-                    {/*        <img src={coffee} alt="Espresso" />*/}
-                    {/*        <h3>Espresso</h3>*/}
-                    {/*        <p className="menu-desc">Coffee 50% | Milk 50%</p>*/}
-                    {/*        <span className="menu-price">$8.50</span>*/}
-                    {/*        <button>Order Now</button>*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
                 </div>
             </section>
+
             <section id="why" className="why">
                 <div className="why-container">
                     <h2 className="why-title">Why are we different?</h2>
                     <p className="why-subtitle">
-                        We don’t just make your coffee, we make your day!
+                        We don't just make your coffee, we make your day!
                     </p>
 
                     <div className="why-grid">
@@ -220,6 +245,7 @@ function LandingPage() {
                     <button className="why-btn">Join Us</button>
                 </div>
             </section>
+
             <footer id="footer" className="footer">
                 <div className="footer-container">
                     <div className="footer-brand">
