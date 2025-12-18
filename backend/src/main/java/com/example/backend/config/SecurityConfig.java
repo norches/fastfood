@@ -22,33 +22,42 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableMethodSecurity
 @EnableWebSecurity
 public class SecurityConfig {
-@Autowired
+    @Autowired
     UserRepo userRepo;
-@Autowired
-MyFilter myFilter;
-@Bean
-public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-httpSecurity.csrf(AbstractHttpConfigurer::disable).cors(Customizer.withDefaults())
-        .authorizeHttpRequests(authorization-> authorization.
-                requestMatchers(HttpMethod.GET,"/api/products").permitAll().
-                requestMatchers("/api/orders").permitAll().
-                requestMatchers(HttpMethod.GET, "/api/products/img").permitAll().
-                requestMatchers(HttpMethod.GET,"/api/auth/refresh").permitAll().
-                requestMatchers("/api/auth/**").permitAll().
-                requestMatchers("/api/admin/assign-admin/**").permitAll().anyRequest().authenticated()).addFilterBefore(myFilter, UsernamePasswordAuthenticationFilter.class);
-    return httpSecurity.build();
-}
-@Bean
-    public UserDetailsService userDetailsService(){
-    return username -> userRepo.findByUsername(username).orElseThrow();
-}
-@Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
-    return configuration.getAuthenticationManager();
-}
-@Bean
-    public PasswordEncoder passwordEncoder(){
-    return new BCryptPasswordEncoder();
-}
+    @Autowired
+    MyFilter myFilter;
 
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity
+                .csrf(AbstractHttpConfigurer::disable)
+                .cors(Customizer.withDefaults())
+                .authorizeHttpRequests(authorization -> authorization
+                        .requestMatchers("/api/products/img").permitAll()
+                        .requestMatchers("/api/products/img/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/products").permitAll()
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/orders").permitAll()
+                        .requestMatchers("/api/admin/assign-admin/**").permitAll()
+                        .anyRequest().authenticated()
+                )
+                .addFilterBefore(myFilter, UsernamePasswordAuthenticationFilter.class);
+
+        return httpSecurity.build();
+    }
+
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return username -> userRepo.findByUsername(username).orElseThrow();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+        return configuration.getAuthenticationManager();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 }

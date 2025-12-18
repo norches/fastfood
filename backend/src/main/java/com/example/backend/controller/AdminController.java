@@ -22,15 +22,13 @@ public class AdminController {
     @Autowired
     RoleRepo roleRepo;
     
-    // Endpoint to assign admin role to a user (for initial setup)
-    // In production, this should be protected or removed
+
     @PostMapping("/assign-admin/{username}")
     public ResponseEntity<?> assignAdminRole(@PathVariable String username) {
         try {
             User user = userRepo.findByUsername(username).orElseThrow(() -> 
                 new RuntimeException("User not found: " + username));
-            
-            // Get or create ROLE_ADMIN
+
             List<Role> adminRoles = roleRepo.findByName("ROLE_ADMIN");
             Role adminRole;
             if (adminRoles.isEmpty()) {
@@ -40,8 +38,7 @@ public class AdminController {
             } else {
                 adminRole = adminRoles.get(0);
             }
-            
-            // Add admin role to user if not already present
+
             List<Role> userRoles = user.getRoles();
             boolean hasAdminRole = userRoles.stream()
                 .anyMatch(role -> role.getName().equals("ROLE_ADMIN"));

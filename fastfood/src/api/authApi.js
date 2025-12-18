@@ -15,13 +15,11 @@ export const refreshAccessToken = async () => {
                 refreshToken: refreshToken
             }
         });
-        
-        // The backend returns just the token string, not JSON
+
         const newAccessToken = typeof res.data === 'string' ? res.data : res.data.access_token;
         localStorage.setItem("accessToken", newAccessToken);
         return newAccessToken;
     } catch (err) {
-        // If refresh fails, clear tokens and redirect to login
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
         throw err;
@@ -35,26 +33,21 @@ export const isTokenExpired = (token) => {
     }
     
     try {
-        // Split token into parts
         const parts = token.split('.');
         if (parts.length !== 3) {
             console.warn('Invalid token format - not a JWT');
-            // Not a valid JWT, but don't mark as expired - let server validate
             return false;
         }
 
-        // Decode the payload
         const payload = JSON.parse(atob(parts[1]));
         console.log('Token payload:', payload);
-        
-        // Check if exp field exists
+
         if (!payload.exp) {
             console.warn('Token does not have expiration field (exp)');
-            // If no exp field, assume not expired - let server validate
             return false;
         }
 
-        const exp = payload.exp * 1000; // Convert to milliseconds
+        const exp = payload.exp * 1000;
         const now = Date.now();
         const isExpired = now >= exp;
         
@@ -71,8 +64,6 @@ export const isTokenExpired = (token) => {
         return isExpired;
     } catch (err) {
         console.error('Error checking token expiration:', err);
-        // If we can't parse, don't assume expired - let the server decide
-        // The server will reject invalid tokens anyway
         return false;
     }
 };
