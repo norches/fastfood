@@ -37,8 +37,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/products/img/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/products").permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/api/orders").permitAll()
                         .requestMatchers("/api/admin/assign-admin/**").permitAll()
+                        .requestMatchers("/api/orders/**").authenticated()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(myFilter, UsernamePasswordAuthenticationFilter.class);

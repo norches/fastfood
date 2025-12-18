@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getUserOrders, deleteOrder } from "../api/orderApi.js";
+import { getUserOrders } from "../api/orderApi.js";
 import "./status.css";
 
 function Status() {
@@ -29,13 +29,14 @@ function Status() {
             try {
                 setLoading(true);
                 const userOrders = await getUserOrders();
+                console.log("Fetched orders:", userOrders);
                 // Filter active orders (not delivered - step < 3)
                 const activeOrders = userOrders.filter(order => {
-                    if (!order.createdAt) return false;
-                    const createdAt = new Date(order.createdAt);
-                    const now = new Date();
-                    const elapsedSeconds = Math.floor((now - createdAt) / 1000);
-                    const currentStep = Math.min(Math.floor(elapsedSeconds / STEP_TIME), steps.length - 1);
+                    if (!order.createdAt) {
+                        console.warn("Order missing createdAt:", order);
+                        return false;
+                    }
+                    const { currentStep } = calculateOrderStatus(order.createdAt);
                     return currentStep < steps.length - 1;
                 });
                 setOrders(activeOrders);
@@ -51,7 +52,14 @@ function Status() {
     }, [navigate]);
 
     const calculateOrderStatus = (createdAt) => {
+        if (!createdAt) {
+            return { currentStep: 0, timeLeft: STEP_TIME };
+        }
         const created = new Date(createdAt);
+        if (isNaN(created.getTime())) {
+            console.error("Invalid date:", createdAt);
+            return { currentStep: 0, timeLeft: STEP_TIME };
+        }
         const now = new Date();
         const elapsedSeconds = Math.floor((now - created) / 1000);
         const currentStep = Math.min(Math.floor(elapsedSeconds / STEP_TIME), steps.length - 1);
@@ -64,36 +72,17 @@ function Status() {
     useEffect(() => {
         if (orders.length === 0) return;
 
-        const interval = setInterval(async () => {
+        const interval = setInterval(() => {
             setOrders(prevOrders => {
-                // Check each order and delete if delivered
-                const ordersToDelete = [];
-                const updatedOrders = [];
-
-                for (const order of prevOrders) {
+                // Filter out delivered orders (step >= 3)
+                const updatedOrders = prevOrders.filter(order => {
+                    if (!order.createdAt) return false;
                     const { currentStep } = calculateOrderStatus(order.createdAt);
-                    if (currentStep >= steps.length - 1) {
-                        // Order is delivered, mark for deletion
-                        ordersToDelete.push(order.orderId);
-                    } else {
-                        updatedOrders.push(order);
-                    }
-                }
-
-                // Delete delivered orders asynchronously
-                if (ordersToDelete.length > 0) {
-                    ordersToDelete.forEach(async (orderId) => {
-                        try {
-                            await deleteOrder(orderId);
-                        } catch (err) {
-                            console.error(`Failed to delete order ${orderId}:`, err);
-                        }
-                    });
-                    return updatedOrders;
-                } else {
-                    // Force re-render to update timers
-                    return [...prevOrders];
-                }
+                    return currentStep < steps.length - 1;
+                });
+                
+                // Force re-render to update timers
+                return updatedOrders.length !== prevOrders.length ? updatedOrders : [...prevOrders];
             });
         }, 1000);
 

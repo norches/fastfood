@@ -17,8 +17,13 @@ public class OrderController {
    return orderService.getAllOrders();
 }
 
+@GetMapping("/my")
+    public HttpEntity<?> getUserOrders(@RequestHeader("Authorization") String authorization){
+    return orderService.getUserOrders(authorization);
+}
+
 @PostMapping
-    public HttpEntity<?> saveOrder(@RequestBody CreateOrderRequest request,@RequestHeader String authorization){
+    public HttpEntity<?> saveOrder(@RequestBody CreateOrderRequest request,@RequestHeader("Authorization") String authorization){
     return    orderService.createOrder(request,authorization);
 }
 }

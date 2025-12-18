@@ -57,7 +57,7 @@ export const getUserOrders = async () => {
     }
 
     try {
-        const res = await axios.get(API_URL, {
+        const res = await axios.get(`${API_URL}/my`, {
             headers: {
                 Authorization: token
             }
@@ -66,6 +66,47 @@ export const getUserOrders = async () => {
         return res.data;
     } catch (err) {
         console.error("getUserOrders error:", err.response?.status, err.response?.data);
+
+        if (err.response?.status === 401) {
+            try {
+                console.log("Got 401, refreshing token...");
+                const newToken = await refreshAccessToken();
+                const retryRes = await axios.get(`${API_URL}/my`, {
+                    headers: {
+                        Authorization: newToken
+                    }
+                });
+                return retryRes.data;
+            } catch (retryErr) {
+                console.error("Token refresh failed:", retryErr);
+                throw new Error("Session expired. Please login again.");
+            }
+        }
+        if (err.response?.status === 403) {
+            throw new Error("Access denied. Admin privileges required.");
+        }
+
+        throw err;
+    }
+};
+
+export const getAllOrders = async () => {
+    const token = localStorage.getItem("accessToken");
+    
+    if (!token) {
+        throw new Error("User not authenticated. Please login first.");
+    }
+
+    try {
+        const res = await axios.get(API_URL, {
+            headers: {
+                Authorization: token
+            }
+        });
+        
+        return res.data;
+    } catch (err) {
+        console.error("getAllOrders error:", err.response?.status, err.response?.data);
 
         if (err.response?.status === 401) {
             try {

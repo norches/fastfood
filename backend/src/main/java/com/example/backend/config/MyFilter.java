@@ -59,7 +59,6 @@ public class MyFilter extends OncePerRequestFilter {
         if (path.startsWith("/api/products/img")) return true;
         if (path.equals("/api/products") && method.equals("GET")) return true;
         if (path.startsWith("/api/auth/")) return true;
-        if (path.equals("/api/orders")) return true;
         if (path.startsWith("/api/admin/assign-admin")) return true;
 
         return false;

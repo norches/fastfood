@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { FaShoppingCart, FaUser, FaDollarSign, FaMapMarkerAlt, FaSpinner } from 'react-icons/fa';
-import { getUserOrders } from '../api/orderApi';
+import { getAllOrders } from '../api/orderApi';
 import './Admin.css';
 
 function Admin() {
@@ -16,7 +16,7 @@ function Admin() {
         try {
             setLoading(true);
             setError(null);
-            const data = await getUserOrders();
+            const data = await getAllOrders();
             setOrders(Array.isArray(data) ? data : []);
         } catch (err) {
             console.error("Failed to load orders:", err);
