@@ -87,6 +87,7 @@ function Register() {
                         onChange={(e) => setPassword(e.target.value)}
                     />
                     <label className="label" htmlFor="input">Enter Password</label>
+                    <a style={{cursor:"pointer"}} onClick={(e) => {e.preventDefault();navigate("/login");}}>Already have an account</a>
                 </div>
                 <button className="register-btn">Register</button>
             </form>

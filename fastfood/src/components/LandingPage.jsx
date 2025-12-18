@@ -117,7 +117,7 @@ function LandingPage() {
                     <div className="nav-icons">
                         {isLoggedIn ? (
                             <div className="user-info">
-                                <span className="username">Account: {userName}</span>
+                                <span className="username" onClick={() => navigate("/status")} style={{ cursor: "pointer" }}>Account: {userName}</span>
                                 <button onClick={handleLogout} className="logout-button">
                                     <FaSignOutAlt />
                                 </button>

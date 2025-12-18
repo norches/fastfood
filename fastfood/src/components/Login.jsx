@@ -33,7 +33,7 @@ function Login() {
             alert("Login successful!");
             navigate("/");
         } catch (err) {
-            console.log(err.response?.status, err.response?.data); // temporary debug
+            console.log(err.response?.status, err.response?.data);
             alert("Invalid username or password");
         }
     };
@@ -62,7 +62,6 @@ function Login() {
                     />
                     <label className="label" htmlFor="input">Enter Password</label>
                 </div>
-                <a>Forgot your password?</a>
                 <button className="submit-btn">Sign In</button>
             </form>
 
