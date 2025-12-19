@@ -38,6 +38,21 @@
     background-color: #c0392b;
 }
 
+.manage-products-btn {
+    padding: 10px 20px;
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.manage-products-btn:hover {
+    background-color: #219653;
+}
+
 .admin-loading {
     display: flex;
     flex-direction: column;
@@ -56,6 +71,7 @@
     from {
         transform: rotate(0deg);
     }
+
     to {
         transform: rotate(360deg);
     }
@@ -266,4 +282,3 @@
         gap: 5px;
     }
 }
-

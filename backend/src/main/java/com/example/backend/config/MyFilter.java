@@ -38,11 +38,16 @@ public class MyFilter extends OncePerRequestFilter {
         try {
             String authorization = request.getHeader("Authorization");
             if (authorization != null && !authorization.isEmpty()) {
-                String id = jwtService.extractToken(authorization);
-                UserDetails user = userRepo.findById(UUID.fromString(id)).orElseThrow();
-                SecurityContextHolder.getContext().setAuthentication(
-                        new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities())
-                );
+                try {
+                    String id = jwtService.extractToken(authorization);
+                    UserDetails user = userRepo.findById(UUID.fromString(id)).orElseThrow();
+                    SecurityContextHolder.getContext().setAuthentication(
+                            new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities())
+                    );
+                } catch (Exception e) {
+                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid or expired token");
+                    return;
+                }
             }
         } catch (Exception e) {
             System.out.println("MyFilter error: " + e.getMessage());

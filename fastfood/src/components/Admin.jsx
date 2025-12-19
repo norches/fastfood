@@ -87,9 +87,14 @@ function Admin() {
                 <h1>
                     <FaShoppingCart /> Orders
                 </h1>
-                <button onClick={loadOrders} className="refresh-btn">
-                    Refresh
-                </button>
+                <div>
+                    <button onClick={loadOrders} className="refresh-btn">
+                        Refresh
+                    </button>
+                    <button onClick={() => window.location.href = '/admin/products'} className="manage-products-btn">
+                        Manage Products
+                    </button>
+                </div>
             </div>
 
             {orders.length === 0 ? (

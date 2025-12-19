@@ -1,0 +1,256 @@
+.admin-products-container {
+    padding: 40px 20px;
+    color: #f5f1dc;
+    background: linear-gradient(135deg, #0b2f24, #0f3d2e, #144b38);
+    min-height: 100vh;
+}
+
+.products-header {
+    max-width: 1200px;
+    margin: 0 auto 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-actions button {
+    margin-left: 10px;
+}
+
+.product-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 24px;
+}
+
+.product-form {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 18px;
+    border-radius: 10px;
+}
+
+.product-form input,
+.product-form textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 12px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(0, 0, 0, 0.2);
+    color: #fff;
+}
+
+.image-preview img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 6px;
+    margin-bottom: 12px;
+}
+
+.form-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.save-btn {
+    background: #27ae60;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.cancel-btn {
+    background: #c0392b;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.product-list {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 18px;
+    border-radius: 10px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px;
+}
+
+.product-card {
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.product-form input:not([type="file"]),
+.product-form textarea {
+    width: 100%;
+    padding: 10px 12px;
+    margin-bottom: 16px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.product-form input:focus,
+.product-form textarea:focus {
+    outline: none;
+    border-color: rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.product-form input[type="file"] {
+    display: none;
+}
+
+.file-input-wrapper {
+    margin-bottom: 16px;
+}
+
+.custom-file-upload {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 10px 16px;
+    background: rgba(255, 255, 255, 0.04);
+    color: rgba(255, 255, 255, 0.7);
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s ease;
+    border: 1.5px dashed rgba(255, 255, 255, 0.15);
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.custom-file-upload:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.25);
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.file-upload-icon {
+    font-size: 20px;
+}
+
+.file-name {
+    margin-top: 8px;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.5);
+    text-align: center;
+    word-break: break-all;
+}
+
+.image-preview {
+    position: relative;
+    margin-bottom: 16px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.image-preview img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 8px;
+}
+
+.remove-image {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    opacity: 0.8;
+}
+
+.remove-image:hover {
+    background: rgba(231, 76, 60, 0.9);
+    opacity: 1;
+}
+
+.back-btn{
+    background: #f4b860;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 26px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.product-image img {
+    width: 265px;
+    height: 170px;
+    object-fit: cover;
+}
+
+.no-image {
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.15);
+    color: #ccc;
+}
+
+.product-info {
+    padding: 10px;
+    color: #f5f1dc;
+}
+
+.product-actions {
+    padding: 10px;
+    display: flex;
+    gap: 8px;
+}
+
+.edit-btn {
+    background: #f39c12;
+    color: #fff;
+    padding: 6px 10px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.delete-btn {
+    background: #e74c3c;
+    color: #fff;
+    padding: 6px 10px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+@media (max-width: 900px) {
+    .product-grid {
+        grid-template-columns: 1fr;
+    }
+}

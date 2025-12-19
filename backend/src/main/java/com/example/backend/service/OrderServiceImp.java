@@ -32,6 +32,10 @@ public class OrderServiceImp implements OrderService {
     ProductRepo productRepo;
     @Autowired
     OrderProductRepo orderProductRepo;
+
+    @Autowired
+    EmailService emailService;
+
     @Override
     public HttpEntity<?> createOrder(CreateOrderRequest request, String token) {
         String id = jwtService.extractToken(token);
@@ -43,6 +47,10 @@ public class OrderServiceImp implements OrderService {
         order.setTotalPrice(calculateTotalSum(dto));
         order.setLocation(request.location());
         orderRepo.save(order);
+        // send notification to admin
+        try {
+            emailService.sendOrderNotification(order);
+        } catch (Exception ignored) { }
         return ResponseEntity.ok(order);
     }
 
