@@ -28,32 +28,28 @@ export const refreshAccessToken = async () => {
 
 export const isTokenExpired = (token) => {
     if (!token) {
-        console.log('No token provided');
         return true;
     }
     
     try {
         const parts = token.split('.');
         if (parts.length !== 3) {
-            console.warn('Invalid token format - not a JWT');
             return false;
         }
 
         const payload = JSON.parse(atob(parts[1]));
-        console.log('Token payload:', payload);
 
         if (!payload.exp) {
-            console.warn('Token does not have expiration field (exp)');
             return false;
         }
 
         const exp = payload.exp * 1000;
         const now = Date.now();
         const isExpired = now >= exp;
-        
+
         if (isExpired) {
-            console.log('Token expired:', { 
-                exp: new Date(exp), 
+            console.log('Token expired:', {
+                exp: new Date(exp),
                 now: new Date(now),
                 diff: (now - exp) / 1000 + ' seconds'
             });
@@ -63,7 +59,6 @@ export const isTokenExpired = (token) => {
         
         return isExpired;
     } catch (err) {
-        console.error('Error checking token expiration:', err);
         return false;
     }
 };

@@ -29,11 +29,8 @@ public class MyFilter extends OncePerRequestFilter {
         String method = request.getMethod();
 
 
-        System.out.println("MyFilter: " + method + " " + path);
-
 
         if (isPublicEndpoint(path, method)) {
-            System.out.println("Public endpoint, skipping authentication");
             filterChain.doFilter(request, response);
             return;
         }
@@ -46,7 +43,6 @@ public class MyFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(
                         new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities())
                 );
-                System.out.println("User authenticated: " + user.getUsername());
             }
         } catch (Exception e) {
             System.out.println("MyFilter error: " + e.getMessage());

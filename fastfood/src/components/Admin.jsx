@@ -19,7 +19,6 @@ function Admin() {
             const data = await getAllOrders();
             setOrders(Array.isArray(data) ? data : []);
         } catch (err) {
-            console.error("Failed to load orders:", err);
             if (err.response?.status === 403) {
                 setError("Access denied. Visit /login to assign admin role.");
             } else if (err.message?.includes("Session expired") || err.message?.includes("login")) {

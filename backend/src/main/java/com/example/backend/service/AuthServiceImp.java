@@ -44,11 +44,8 @@ public class AuthServiceImp implements AuthService {
 
     @Override
     public ResponseEntity<?> getUser(String username, String password) {
-        System.out.println(username);
         User user = userRepo.findByUsername(username).orElseThrow();
-        // Manually verify password using the configured PasswordEncoder instead of AuthenticationManager
         if (!passwordEncoder.matches(password, user.getPassword())) {
-            // Return 401 when password is wrong
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(Map.of("message", "Bad credentials"));
         }

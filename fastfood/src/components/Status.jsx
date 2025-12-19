@@ -12,7 +12,7 @@ function Status() {
         { title: "Yetkazildi", icon: "📦" },
     ];
 
-    const STEP_TIME = 1 * 60; // 10 minut
+    const STEP_TIME = 10 * 60;
 
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -29,8 +29,6 @@ function Status() {
             try {
                 setLoading(true);
                 const userOrders = await getUserOrders();
-                console.log("Fetched orders:", userOrders);
-                // Filter active orders (not delivered - step < 3)
                 const activeOrders = userOrders.filter(order => {
                     if (!order.createdAt) {
                         console.warn("Order missing createdAt:", order);
@@ -57,7 +55,6 @@ function Status() {
         }
         const created = new Date(createdAt);
         if (isNaN(created.getTime())) {
-            console.error("Invalid date:", createdAt);
             return { currentStep: 0, timeLeft: STEP_TIME };
         }
         const now = new Date();
@@ -74,14 +71,12 @@ function Status() {
 
         const interval = setInterval(() => {
             setOrders(prevOrders => {
-                // Filter out delivered orders (step >= 3)
                 const updatedOrders = prevOrders.filter(order => {
                     if (!order.createdAt) return false;
                     const { currentStep } = calculateOrderStatus(order.createdAt);
                     return currentStep < steps.length - 1;
                 });
-                
-                // Force re-render to update timers
+
                 return updatedOrders.length !== prevOrders.length ? updatedOrders : [...prevOrders];
             });
         }, 1000);

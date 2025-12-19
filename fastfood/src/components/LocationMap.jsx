@@ -4,7 +4,6 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import './LocationMap.css';
 
-// Fix for default marker icon in React-Leaflet
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
     iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png',
@@ -27,10 +26,9 @@ function LocationMarker({ onLocationSelect }) {
 }
 
 function LocationMap({ onLocationSelect, initialLocation }) {
-    const [mapCenter, setMapCenter] = useState([40.7128, -74.0060]); // Default to NYC
+    const [mapCenter, setMapCenter] = useState([40.7128, -74.0060]);
 
     useEffect(() => {
-        // Try to get user's current location
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 (position) => {
@@ -38,8 +36,7 @@ function LocationMap({ onLocationSelect, initialLocation }) {
                     setMapCenter([latitude, longitude]);
                 },
                 () => {
-                    // If geolocation fails, use default center
-                    console.log('Geolocation not available, using default center');
+                    console.log('Geolocation not available');
                 }
             );
         }

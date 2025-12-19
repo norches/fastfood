@@ -44,7 +44,6 @@
             File destinationFile = new File(uploadDir + name);
             file.transferTo(destinationFile);
 
-            System.out.println("File saved to: " + destinationFile.getAbsolutePath());
             return name;
         }
         @GetMapping("/img")

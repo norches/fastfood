@@ -37,7 +37,6 @@ public class AuthController {
     @GetMapping("/me")
     public HttpEntity<?> getOneUser(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println(authentication);
         return ResponseEntity.ok(authentication.getAuthorities());
     }
 }

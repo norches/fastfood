@@ -40,7 +40,6 @@ function LandingPage() {
             const decodedToken = parseJwt(token);
             setUserName(decodedToken.firstName || "User");
         } catch (error) {
-            console.error("Failed to fetch user info", error);
             handleLogout();
         }
     };

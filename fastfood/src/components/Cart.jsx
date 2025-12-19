@@ -45,7 +45,6 @@ function Cart({ cartItems, onUpdateQuantity, onRemoveItem, onClose, products }) 
         const locationString = `${selectedLocation.lat}, ${selectedLocation.lng}`;
 
         try {
-            console.log("Placing order with token:", token.substring(0, 20) + "...");
             await createOrder(cartItems, locationString);
             setOrderSuccess(true);
             setTimeout(() => {
@@ -55,7 +54,6 @@ function Cart({ cartItems, onUpdateQuantity, onRemoveItem, onClose, products }) 
                 cartItems.forEach(item => onRemoveItem(item.productId));
             }, 2000);
         } catch (err) {
-            console.error("Order failed:", err);
             if (err.response?.status === 401 || err.message?.includes("Session expired") || err.message?.includes("login")) {
                 setError("Session expired. Please login again.");
                 setTimeout(() => {

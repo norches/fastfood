@@ -32,15 +32,9 @@ function Register() {
 
             localStorage.setItem("accessToken", accessToken);
             localStorage.setItem("refreshToken", refreshToken);
-
-            console.log("Login successful! Tokens stored.");
-            console.log("Access token (first 50 chars):", accessToken.substring(0, 50));
-
-            alert("Register successful!");
             navigate("/");
         } catch (err) {
             console.log(err.response?.status, err.response?.data);
-            alert("Invalid username or password");
         }
     };
 
