@@ -4,6 +4,7 @@ import { createOrder } from '../api/orderApi';
 import { getProductImage } from '../api/productApi';
 import LocationMap from './LocationMap';
 import './Cart.css';
+import {useNavigate} from "react-router-dom";
 
 function Cart({ cartItems, onUpdateQuantity, onRemoveItem, onClose, products }) {
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -53,6 +54,7 @@ function Cart({ cartItems, onUpdateQuantity, onRemoveItem, onClose, products }) 
                 onClose();
                 cartItems.forEach(item => onRemoveItem(item.productId));
             }, 2000);
+            window.location.href = "/status";
         } catch (err) {
             if (err.response?.status === 401 || err.message?.includes("Session expired") || err.message?.includes("login")) {
                 setError("Session expired. Please login again.");

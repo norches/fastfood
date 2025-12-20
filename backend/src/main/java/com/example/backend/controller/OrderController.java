@@ -7,6 +7,8 @@ import org.springframework.http.HttpEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/api/orders")
 public class OrderController {
@@ -26,4 +28,8 @@ public class OrderController {
     public HttpEntity<?> saveOrder(@RequestBody CreateOrderRequest request,@RequestHeader("Authorization") String authorization){
     return    orderService.createOrder(request,authorization);
 }
+    @DeleteMapping("/{orderId}")
+    public HttpEntity<?> deleteOrder(@PathVariable UUID orderId) {
+        return orderService.deleteOrder(orderId);
+    }
 }

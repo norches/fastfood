@@ -14,18 +14,22 @@ import java.util.UUID;
 @NoArgsConstructor
 @Entity(name = "orders")
 public class Order {
-@Id
+    @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+
     @ManyToOne
     private User user;
+
     private Float totalPrice;
     private String location;
-    @OneToMany
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderProduct> orderProducts;
+
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
-    
+
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();

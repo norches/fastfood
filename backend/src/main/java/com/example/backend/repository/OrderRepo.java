@@ -5,6 +5,7 @@ import com.example.backend.projection.OrderProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,5 +27,8 @@ inner join  product p on op.product_id = p.id where u.id=:id
                            group by u.id,orders.id,orders.location,orders.created_at                                          
             """,nativeQuery = true)
     List<OrderProjection> getAllOrders();
+
+    @Query("SELECT o FROM orders o WHERE o.createdAt < :cutoffTime")
+    List<Order> findOrdersOlderThan(LocalDateTime cutoffTime);
 }
 

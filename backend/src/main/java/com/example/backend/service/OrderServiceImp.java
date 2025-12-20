@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,8 +23,8 @@ import java.util.UUID;
 
 @Service
 public class OrderServiceImp implements OrderService {
-   @Autowired
-   OrderRepo orderRepo;
+    @Autowired
+    OrderRepo orderRepo;
     @Autowired
     UserRepo userRepo;
     @Autowired
@@ -32,7 +33,6 @@ public class OrderServiceImp implements OrderService {
     ProductRepo productRepo;
     @Autowired
     OrderProductRepo orderProductRepo;
-
     @Autowired
     EmailService emailService;
 
@@ -47,10 +47,11 @@ public class OrderServiceImp implements OrderService {
         order.setTotalPrice(calculateTotalSum(dto));
         order.setLocation(request.location());
         orderRepo.save(order);
-        // send notification to admin
+
         try {
             emailService.sendOrderNotification(order);
         } catch (Exception ignored) { }
+
         return ResponseEntity.ok(order);
     }
 
@@ -67,20 +68,36 @@ public class OrderServiceImp implements OrderService {
         return ResponseEntity.ok(allOrders);
     }
 
-    private Float calculateTotalSum(List<OrderDto> dto){
+    @Override
+    @Transactional
+    public HttpEntity<?> deleteOrder(UUID orderId) {
+        Order order = orderRepo.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Order not found"));
+
+        // Thanks to CascadeType.ALL in Order entity,
+        // this will automatically delete associated OrderProducts
+        // and remove entries from orders_order_products join table
+        orderRepo.delete(order);
+
+        return ResponseEntity.ok("Order deleted successfully");
+    }
+
+    private Float calculateTotalSum(List<OrderDto> dto) {
         Float sum = 0f;
         for (OrderDto orderDto : dto) {
             Product product = productRepo.findById(orderDto.productId()).orElseThrow();
-            sum+=orderDto.quantity()*product.getPrice();
+            sum += orderDto.quantity() * product.getPrice();
         }
-    return sum;}
+        return sum;
+    }
 
-    private List<OrderProduct> collectOrderProducts(List<OrderDto> dto){
+    private List<OrderProduct> collectOrderProducts(List<OrderDto> dto) {
         List<OrderProduct> orderProducts = new ArrayList<>();
         for (OrderDto orderDto : dto) {
             Product product = productRepo.findById(orderDto.productId()).orElseThrow();
-            orderProducts.add(new OrderProduct(product,orderDto.quantity()));
+            orderProducts.add(new OrderProduct(product, orderDto.quantity()));
         }
-       orderProductRepo.saveAll(orderProducts);
-    return orderProducts;}
+        orderProductRepo.saveAll(orderProducts);
+        return orderProducts;
+    }
 }
