@@ -31,3 +31,14 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Env / local data ###
+.env
+.env.*
+!.env.example
+
+### Docker local volumes ###
+/.data/
+
+### Uploaded files (generated) ###
+/files/img/

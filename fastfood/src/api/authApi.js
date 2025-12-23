@@ -1,65 +1,66 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:8080/api/auth";
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8080";
+const API_URL = `${BASE_URL}/api/auth`;
 
 export const refreshAccessToken = async () => {
-    const refreshToken = localStorage.getItem("refreshToken");
-    
-    if (!refreshToken) {
-        throw new Error("No refresh token available");
-    }
+  const refreshToken = localStorage.getItem("refreshToken");
 
-    try {
-        const res = await axios.get(`${API_URL}/refresh`, {
-            headers: {
-                refreshToken: refreshToken
-            }
-        });
+  if (!refreshToken) {
+    throw new Error("No refresh token available");
+  }
 
-        const newAccessToken = typeof res.data === 'string' ? res.data : res.data.access_token;
-        localStorage.setItem("accessToken", newAccessToken);
-        return newAccessToken;
-    } catch (err) {
-        localStorage.removeItem("accessToken");
-        localStorage.removeItem("refreshToken");
-        throw err;
-    }
+  try {
+    const res = await axios.get(`${API_URL}/refresh`, {
+      headers: {
+        refreshToken: refreshToken,
+      },
+    });
+
+    const newAccessToken =
+      typeof res.data === "string" ? res.data : res.data.access_token;
+    localStorage.setItem("accessToken", newAccessToken);
+    return newAccessToken;
+  } catch (err) {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    throw err;
+  }
 };
 
 export const isTokenExpired = (token) => {
-    if (!token) {
-        return true;
+  if (!token) {
+    return true;
+  }
+
+  try {
+    const parts = token.split(".");
+    if (parts.length !== 3) {
+      return false;
     }
-    
-    try {
-        const parts = token.split('.');
-        if (parts.length !== 3) {
-            return false;
-        }
 
-        const payload = JSON.parse(atob(parts[1]));
+    const payload = JSON.parse(atob(parts[1]));
 
-        if (!payload.exp) {
-            return false;
-        }
-
-        const exp = payload.exp * 1000;
-        const now = Date.now();
-        const isExpired = now >= exp;
-
-        if (isExpired) {
-            console.log('Token expired:', {
-                exp: new Date(exp),
-                now: new Date(now),
-                diff: (now - exp) / 1000 + ' seconds'
-            });
-        } else {
-            console.log('Token valid, expires in:', (exp - now) / 1000, 'seconds');
-        }
-        
-        return isExpired;
-    } catch (err) {
-        return false;
+    if (!payload.exp) {
+      return false;
     }
+
+    const exp = payload.exp * 1000;
+    const now = Date.now();
+    const isExpired = now >= exp;
+
+    if (isExpired) {
+      console.log("Token expired:", {
+        exp: new Date(exp),
+        now: new Date(now),
+        diff: (now - exp) / 1000 + " seconds",
+      });
+    } else {
+      console.log("Token valid, expires in:", (exp - now) / 1000, "seconds");
+    }
+
+    return isExpired;
+  } catch (err) {
+    return false;
+  }
 };
-
