@@ -48,4 +48,5 @@ RUN npm run build
 
 FROM nginx:1.27-alpine AS frontend-runtime
 COPY --from=frontend-build /workspace/fastfood/dist/ /usr/share/nginx/html/
+COPY fastfood/nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80
