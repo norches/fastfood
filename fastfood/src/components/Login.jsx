@@ -63,9 +63,9 @@ function Login() {
         navigate("/");
       }
     } catch (err) {
-      console.log("Login error:", err.response?.status, err.response?.data);
+      console.log("Xatolik:", err.response?.status, err.response?.data);
       setError(
-        err.response?.data?.message || "Login failed. Please try again."
+        err.response?.data?.message || "Qayta urinib ko'ring."
       );
     }
   };
@@ -73,7 +73,7 @@ function Login() {
   return (
     <div className="container-login">
       <form className="form-control" onSubmit={submitLogin}>
-        <p className="title">Login</p>
+        <p className="title">Kirish</p>
         {error && (
           <div
             style={{
@@ -97,7 +97,7 @@ function Login() {
             onChange={(e) => setUsername(e.target.value)}
           />
           <label className="label" htmlFor="input">
-            Enter username
+            Username kiriting
           </label>
         </div>
         <div className="input-field">
@@ -109,10 +109,10 @@ function Login() {
             onChange={(e) => setPassword(e.target.value)}
           />
           <label className="label" htmlFor="input">
-            Enter Password
+            Parolingizni kiriting
           </label>
         </div>
-        <button className="submit-btn">Sign In</button>
+        <button className="submit-btn">Kirish</button>
       </form>
     </div>
   );

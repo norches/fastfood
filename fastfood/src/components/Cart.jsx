@@ -23,7 +23,7 @@ function Cart({ cartItems, onUpdateQuantity, onRemoveItem, onClose, products }) 
         const token = localStorage.getItem("accessToken");
         
         if (!token) {
-            setError("Please login first to place an order");
+            setError("Iltimos akkauntingizga kiring");
             setTimeout(() => {
                 window.location.href = "/register";
             }, 2000);
@@ -31,12 +31,12 @@ function Cart({ cartItems, onUpdateQuantity, onRemoveItem, onClose, products }) 
         }
 
         if (cartItems.length === 0) {
-            setError("Your cart is empty");
+            setError("Savatingiz hali bo'sh");
             return;
         }
 
         if (!selectedLocation) {
-            setError("Please select your delivery location on the map");
+            setError("Xaritada yetkazib berish manzilingizni tanlang");
             return;
         }
 
@@ -54,15 +54,14 @@ function Cart({ cartItems, onUpdateQuantity, onRemoveItem, onClose, products }) 
                 onClose();
                 cartItems.forEach(item => onRemoveItem(item.productId));
             }, 2000);
-            window.location.href = "/status";
         } catch (err) {
             if (err.response?.status === 401 || err.message?.includes("Session expired") || err.message?.includes("login")) {
-                setError("Session expired. Please login again.");
+                setError("Iltimos qayta akkauntingizga kiring.");
                 setTimeout(() => {
                     window.location.href = "/login";
                 }, 2000);
             } else {
-                setError(err.response?.data?.message || err.message || "Failed to place order. Please try again.");
+                setError(err.response?.data?.message || err.message || "Qayta urinib ko'ring.");
             }
         } finally {
             setIsSubmitting(false);
@@ -78,7 +77,7 @@ function Cart({ cartItems, onUpdateQuantity, onRemoveItem, onClose, products }) 
             <div className="cart-sidebar" onClick={(e) => e.stopPropagation()}>
                 <div className="cart-header">
                     <h2>
-                        <FaShoppingCart /> Your Cart
+                        <FaShoppingCart /> Sizning savatingiz
                     </h2>
                     <button className="cart-close-btn" onClick={onClose}>
                         <FaTimes />
@@ -88,8 +87,8 @@ function Cart({ cartItems, onUpdateQuantity, onRemoveItem, onClose, products }) 
                 <div className="cart-content">
                     {cartItems.length === 0 ? (
                         <div className="cart-empty">
-                            <p>Your cart is empty</p>
-                            <p className="cart-empty-sub">Add items from the menu to get started!</p>
+                            <p>Savatingiz hali bo'sh</p>
+                            <p className="cart-empty-sub">Boshlash uchun menyudan narsalarni qo'shing!</p>
                         </div>
                     ) : (
                         <>
@@ -127,7 +126,7 @@ function Cart({ cartItems, onUpdateQuantity, onRemoveItem, onClose, products }) 
                                                         onClick={() => onRemoveItem(item.productId)}
                                                         className="remove-btn"
                                                     >
-                                                        Remove
+                                                        O'chirish
                                                     </button>
                                                 </div>
                                             </div>
@@ -138,7 +137,7 @@ function Cart({ cartItems, onUpdateQuantity, onRemoveItem, onClose, products }) 
 
                             <div className="cart-location-section">
                                 <label className="location-label">
-                                    <FaMapMarkerAlt /> Select Delivery Location *
+                                    <FaMapMarkerAlt /> Manzilingizni tanlang *
                                 </label>
                                 <LocationMap 
                                     onLocationSelect={(location) => {
@@ -150,7 +149,7 @@ function Cart({ cartItems, onUpdateQuantity, onRemoveItem, onClose, products }) 
                                     <div className="selected-location-info">
                                         <FaMapMarkerAlt className="location-icon" />
                                         <span>
-                                            Selected: {selectedLocation.lat.toFixed(6)}, {selectedLocation.lng.toFixed(6)}
+                                            Tanlangan manzil: {selectedLocation.lat.toFixed(6)}, {selectedLocation.lng.toFixed(6)}
                                         </span>
                                     </div>
                                 )}
@@ -158,7 +157,7 @@ function Cart({ cartItems, onUpdateQuantity, onRemoveItem, onClose, products }) 
 
                             <div className="cart-footer">
                                 <div className="cart-total">
-                                    <span>Total:</span>
+                                    <span>Umumiy:</span>
                                     <span className="total-price">{calculateTotal()} so'm</span>
                                 </div>
                                 
@@ -170,7 +169,7 @@ function Cart({ cartItems, onUpdateQuantity, onRemoveItem, onClose, products }) 
                                 
                                 {orderSuccess && (
                                     <div className="cart-success">
-                                        Order placed successfully! 🎉
+                                        Buyurtmangiz qabul qilindi! 🎉
                                     </div>
                                 )}
 
@@ -179,7 +178,7 @@ function Cart({ cartItems, onUpdateQuantity, onRemoveItem, onClose, products }) 
                                     disabled={isSubmitting || cartItems.length === 0}
                                     className="checkout-btn"
                                 >
-                                    {isSubmitting ? "Processing..." : "Confirm Order"}
+                                    {isSubmitting ? "Jarayonda..." : "Buyurtma berish"}
                                 </button>
                             </div>
                         </>

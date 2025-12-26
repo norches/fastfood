@@ -243,6 +243,7 @@ ul .li {
 .thumb img {
     width: 90%;
     filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.5));
+    margin-left: 10px;
 }
 
 
@@ -478,7 +479,7 @@ ul .li {
 
     .text-section {
         position: relative;
-        background-image: url("./img/coffee.png");
+        background-image: url("./img/aksiya.png");
         background-repeat: no-repeat;
         background-position: center;
         background-size: 350px;
@@ -647,7 +648,7 @@ ul .li {
 
 .why-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 26px;
     margin-bottom: 50px;
 }

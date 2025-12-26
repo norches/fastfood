@@ -44,7 +44,7 @@ function Register() {
   return (
     <div className="container-register">
       <form className="form-register" onSubmit={submitLogin}>
-        <p className="title">Register</p>
+        <p className="title">Registratsiya</p>
         <div className="input-field-register">
           <input
             required
@@ -54,7 +54,7 @@ function Register() {
             onChange={(e) => setFirstname(e.target.value)}
           />
           <label className="label" htmlFor="input">
-            Enter first name
+            Ismingizni kiriting
           </label>
         </div>
         <div className="input-field-register">
@@ -66,7 +66,7 @@ function Register() {
             onChange={(e) => setLastname(e.target.value)}
           />
           <label className="label" htmlFor="input">
-            Enter last name
+            Familiyangizni kiriting
           </label>
         </div>
         <div className="input-field-register">
@@ -78,7 +78,7 @@ function Register() {
             onChange={(e) => setUsername(e.target.value)}
           />
           <label className="label" htmlFor="input">
-            Enter username
+            Username kiriting
           </label>
         </div>
         <div className="input-field-register">
@@ -90,14 +90,14 @@ function Register() {
             onChange={(e) => setPassword(e.target.value)}
           />
           <label className="label" htmlFor="input">
-            Enter Password
+            Parolingizni kiriting
           </label>
         </div>
         <div
           style={{ display: "flex", gap: "10px" }}
           className="input-field-register"
         >
-          <p>Already have an account?</p>
+          <p>Allaqachon akkauntingiz mavjudmi?</p>
           <a
             style={{ cursor: "pointer", color: "darkblue" }}
             onClick={(e) => {
@@ -105,10 +105,10 @@ function Register() {
               navigate("/login");
             }}
           >
-            Login
+            Kirish
           </a>
         </div>
-        <button className="register-btn">Register</button>
+        <button className="register-btn">Registratsiya qilish</button>
       </form>
     </div>
   );

@@ -68,14 +68,14 @@ function AdminProducts() {
     };
 
     const handleDelete = async (id) => {
-        if (!window.confirm('Delete this product?')) return;
+        if (!window.confirm('Aniq uchirmoqchimisiz?')) return;
         try {
             await deleteProduct(id);
             await loadProducts();
         } catch (err) {
             const errorMsg = err.response?.data?.message || err.message;
             if (errorMsg.includes('foreign key') || errorMsg.includes('constraint')) {
-                alert('Cannot delete this product because it has been ordered by customers.');
+                alert('Bu tovarni uchirib bulmaydi.');
             } else {
                 alert('Delete failed: ' + errorMsg);
             }
@@ -122,7 +122,7 @@ function AdminProducts() {
     if (loading) {
         return (
             <div className="admin-products-container">
-                <h2>Loading products...</h2>
+                <h2>Mahsulotlar yuklanmoqda...</h2>
             </div>
         );
     }
@@ -130,32 +130,32 @@ function AdminProducts() {
     return (
         <div className="admin-products-container">
             <div className="products-header">
-                <h1>Product Management</h1>
+                <h1>Mahsulotlarni boshqarish</h1>
                 <div className="header-actions">
                     <button onClick={loadProducts} className="refresh-btn">Refresh</button>
-                    <button onClick={() => window.location.href = '/admin'} className="back-btn">Back to Orders</button>
+                    <button onClick={() => window.location.href = '/admin'} className="back-btn">Buyurtmalarga qaytish</button>
                 </div>
             </div>
 
             <div className="product-grid">
                 <div className="product-form">
-                    <h3>{editingId ? 'Edit Product' : 'Add Product'}</h3>
+                    <h3>{editingId ? 'Mahsulotni tahrirlash' : 'Mahsulot qushish'}</h3>
                     {error && <div className="error">{error}</div>}
                     <form onSubmit={handleSave}>
-                        <label>Name</label>
+                        <label>Nomi</label>
                         <input name="name" value={form.name} onChange={handleChange} required />
 
-                        <label>Description</label>
+                        <label>Qo'shimcha ma'lumot</label>
                         <textarea name="description" value={form.description} onChange={handleChange} />
 
-                        <label>Price</label>
+                        <label>Narxi</label>
                         <input name="price" value={form.price} onChange={handleChange} type="number" step="0.01" required />
 
-                        <label>Image</label>
+                        <label>Rasmi</label>
                         <div className="file-input-wrapper">
                             <label htmlFor="file-upload" className="custom-file-upload">
                                 <span className="file-upload-icon">📁</span>
-                                {file ? 'Change Image' : 'Choose Image'}
+                                {file ? 'Rasmni ozgartirish' : 'Rasm yuklash'}
                             </label>
                             <input
                                 id="file-upload"
@@ -182,17 +182,17 @@ function AdminProducts() {
 
                         <div className="form-actions">
                             <button type="submit" className="save-btn" disabled={saving}>
-                                {saving ? 'Saving...' : (editingId ? 'Save Changes' : 'Add Product')}
+                                {saving ? 'Saving...' : (editingId ? 'Tahrirlash' : 'Mahsulot yuklash')}
                             </button>
-                            <button type="button" className="cancel-btn" onClick={resetForm}>Cancel</button>
+                            <button type="button" className="cancel-btn" onClick={resetForm}>Bekor qilish</button>
                         </div>
                     </form>
                 </div>
 
                 <div className="product-list">
-                    <h3>Existing Products</h3>
+                    <h3>Mavjud mahsulotlar</h3>
                     {products.length === 0 ? (
-                        <div>No products found</div>
+                        <div>Mahsulotlar yo'q</div>
                     ) : (
                         <div className="grid">
                             {products.map(p => (
@@ -201,7 +201,7 @@ function AdminProducts() {
                                         {p.image ? (
                                             <img src={getProductImage(p.image)} alt={p.name} />
                                         ) : (
-                                            <div className="no-image">No image</div>
+                                            <div className="no-image">Rasm mavjud emas</div>
                                         )}
                                     </div>
                                     <div className="product-info">
@@ -210,8 +210,8 @@ function AdminProducts() {
                                         <p className="desc">{p.description}</p>
                                     </div>
                                     <div className="product-actions">
-                                        <button onClick={() => handleEdit(p)} className="edit-btn">Edit</button>
-                                        <button onClick={() => handleDelete(p.id)} className="delete-btn">Delete</button>
+                                        <button onClick={() => handleEdit(p)} className="edit-btn">Tahrirlash</button>
+                                        <button onClick={() => handleDelete(p.id)} className="delete-btn">O'chirish</button>
                                     </div>
                                 </div>
                             ))}
