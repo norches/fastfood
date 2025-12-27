@@ -66,7 +66,7 @@ function Register() {
             onChange={(e) => setLastname(e.target.value)}
           />
           <label className="label" htmlFor="input">
-            Familiyangizni kiriting
+            Telefon raqamingizni kiriting
           </label>
         </div>
         <div className="input-field-register">

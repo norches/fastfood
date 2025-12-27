@@ -37,6 +37,7 @@ public class EmailService {
             StringBuilder body = new StringBuilder();
             body.append("Total: ").append(order.getTotalPrice()).append("\n");
             body.append("Location: ").append(order.getLocation()).append("\n\n");
+            body.append("Username: ").append(order.getUser().getLastName()).append("\n\n");
             body.append("Items:\n");
             if (order.getOrderProducts() != null) {
                 for (OrderProduct op : order.getOrderProducts()) {
